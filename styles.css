@@ -1,0 +1,598 @@
+
+/* ========================================
+   1. GLOBAL SETTINGS
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #07111f;
+    --card: rgba(17, 31, 52, 0.88);
+    --card-light: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.10);
+    --blue: #4da3ff;
+    --blue-light: #7bc0ff;
+    --text: #f2f6ff;
+    --muted: #9eafc7;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 30px 18px;
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(ellipse at top left, #142e55 0%, transparent 45%),
+        radial-gradient(ellipse at bottom right, #17264c 0%, transparent 40%),
+        var(--background);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* ========================================
+   2. MAIN DASHBOARD
+======================================== */
+
+.weather-container {
+    width: 100%;
+    max-width: 850px;
+    padding: 32px;
+    text-align: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(18px);
+    animation: appear 0.7s ease-out;
+}
+
+h1 {
+    margin: 0 0 28px;
+    font-size: clamp(26px, 4vw, 36px);
+    letter-spacing: -1px;
+    font-weight: 700;
+}
+
+/* ========================================
+   3. SEARCH BAR
+======================================== */
+
+#cityInput {
+    width: min(68%, 420px);
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    outline: none;
+    font-size: 15px;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.07);
+    transition: all 0.3s ease;
+}
+
+#cityInput::placeholder {
+    color: var(--muted);
+}
+
+#cityInput:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.15);
+}
+
+#searchBtn {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #4da3ff, #3478f6);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#searchBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(52, 120, 246, 0.3);
+}
+
+#searchBtn:active {
+    transform: scale(0.97);
+}
+
+/* ========================================
+   4. CURRENT WEATHER
+======================================== */
+
+#weatherResult {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 28px;
+}
+
+#weatherIcon,
+#cityName,
+#temperature,
+#description {
+    grid-column: 1 / -1;
+}
+
+#weatherIcon {
+    font-size: 76px;
+    margin: 12px 0 0;
+    filter: drop-shadow(0 5px 18px rgba(77, 163, 255, 0.18));
+}
+
+#cityName {
+    font-size: clamp(24px, 4vw, 32px);
+    margin: 4px 0;
+    font-weight: 600;
+}
+
+#temperature {
+    font-size: clamp(48px, 8vw, 68px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin: 0;
+    color: var(--blue-light);
+}
+
+#description {
+    color: var(--muted);
+    font-size: 16px;
+    margin: 0 0 12px;
+    text-transform: capitalize;
+}
+
+/* Wind and humidity cards */
+
+#wind-speed,
+#humidity {
+    margin: 0;
+    padding: 19px 12px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--card-light);
+    color: var(--text);
+    font-size: 15px;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+#wind-speed:hover,
+#humidity:hover {
+    background: rgba(77, 163, 255, 0.09);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   5. SECTION HEADINGS
+======================================== */
+
+#forecast,
+#hourlyForecast {
+    margin-top: 34px;
+    width: 100%;
+    text-align: left;
+}
+
+#forecast h2,
+#hourlyForecast h2 {
+    font-size: 21px;
+    margin: 0 0 18px;
+    letter-spacing: -0.3px;
+}
+
+/* ========================================
+   6. FIVE-DAY FORECAST
+======================================== */
+
+#forecastList {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.forecast-card {
+    min-width: 0;
+    padding: 18px 8px;
+    background: var(--card-light);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    text-align: center;
+    transition: transform 0.25s ease, border-color 0.25s ease,
+                background 0.25s ease;
+}
+
+.forecast-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(77, 163, 255, 0.4);
+    background: rgba(77, 163, 255, 0.08);
+}
+
+.forecast-card h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+}
+
+.forecast-card p {
+    font-size: 13px;
+    margin: 8px 0;
+    color: var(--muted);
+}
+
+.forecast-card .forecast-icon {
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+/* ========================================
+   7. HOURLY FORECAST
+======================================== */
+
+#hourlyList {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 5px 3px 15px;
+    scrollbar-width: thin;
+    scrollbar-color: #38577e transparent;
+}
+
+.hour-card {
+    flex: 0 0 105px;
+    padding: 17px 8px;
+    background: var(--card-light);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    text-align: center;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.hour-card:hover {
+    transform: translateY(-4px);
+    background: rgba(77, 163, 255, 0.09);
+}
+
+.hour-card h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+}
+
+.hour-card p {
+    font-size: 13px;
+    margin: 8px 0;
+    color: var(--muted);
+}
+
+.hour-card .hour-icon {
+    font-size: 29px;
+}
+
+/* ========================================
+   8. RECENT SEARCHES
+======================================== */
+
+#searchHistory {
+    margin-top: 28px;
+    text-align: left;
+}
+
+#searchHistory h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+#historyList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+#historyList button {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--card-light);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#historyList button:hover {
+    background: rgba(77, 163, 255, 0.14);
+    border-color: var(--blue);
+}
+
+/* ========================================
+   9. OTHER BUTTONS
+======================================== */
+
+button {
+    font-family: inherit;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--blue-light);
+    outline-offset: 3px;
+}
+
+/* ========================================
+   10. DARK MODE SUPPORT
+======================================== */
+
+body.dark-mode {
+    --background: #030914;
+    --card: rgba(10, 20, 36, 0.94);
+    --card-light: rgba(255, 255, 255, 0.045);
+    --border: rgba(255, 255, 255, 0.09);
+    --text: #f2f6ff;
+    --muted: #9eafc7;
+}
+
+/* ========================================
+   11. ANIMATION
+======================================== */
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   12. RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 650px) {
+    body {
+        padding: 16px 10px;
+    }
+
+    .weather-container {
+        padding: 23px 16px;
+        border-radius: 22px;
+    }
+
+    #forecastList {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #forecastList .forecast-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    #cityInput {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #searchBtn {
+        width: 100%;
+    }
+
+    #weatherResult {
+        gap: 10px;
+    }
+
+    #temperature {
+        font-size: 48px;
+    }
+
+    #forecast,
+    #hourlyForecast {
+        margin-top: 28px;
+    }
+}
+
+@media (max-width: 350px) {
+    #forecastList {
+        grid-template-columns: 1fr;
+    }
+
+    #forecastList .forecast-card:last-child {
+        grid-column: auto;
+    }
+
+    #wind-speed,
+    #humidity {
+        font-size: 13px;
+        padding: 14px 8px;
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dashboard header and vertical sidebar */
+.dashboard-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 175px;
+    gap: 24px;
+    align-items: start;
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.main-content {
+    min-width: 0;
+}
+
+.main-content h1 {
+    margin-bottom: 24px;
+}
+
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-bar #cityInput {
+    flex: 1;
+    width: auto;
+    min-width: 130px;
+}
+
+.search-bar #searchBtn {
+    flex-shrink: 0;
+}
+
+.control-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 18px;
+}
+
+.control-sidebar button {
+    width: 100%;
+    padding: 13px 10px;
+    border: 1px solid rgba(77, 163, 255, 0.25);
+    border-radius: 12px;
+    background: rgba(77, 163, 255, 0.10);
+    color: #f2f6ff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.control-sidebar button:hover {
+    background: rgba(77, 163, 255, 0.22);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    .dashboard-header {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .control-sidebar {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .main-content h1 {
+        text-align: center;
+    }
+}
+
+/* Professional date and time */
+#currentDateTime {
+    margin: -14px 0 24px;
+    color: #9eafc7;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+}
+
+/* Refined search bar */
+.search-bar {
+    align-items: stretch;
+}
+
+.search-bar #cityInput,
+.search-bar #searchBtn {
+    min-height: 46px;
+}
+
+/* A little extra polish for the dashboard */
+.weather-container {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.weather-container:hover {
+    border-color: rgba(77, 163, 255, 0.22);
+    box-shadow: 0 28px 85px rgba(0, 0, 0, 0.35);
+}
+
+
+/* Professional footer */
+.app-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 850px;
+    margin: 22px auto 0;
+    padding: 18px 12px;
+    box-sizing: border-box;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    color: #9eafc7;
+    font-size: 12px;
+    gap: 8px;
+}
+
+.app-footer p {
+    margin: 0;
+    color: #f2f6ff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+.app-footer span {
+    display: block;
+}
+
+/* Clear History button */
+#clearHistoryBtn {
+    padding: 8px 14px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(77, 163, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(77, 163, 255, 0.12);
+    color: #dceaff;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+#clearHistoryBtn:hover {
+    background: rgba(77, 163, 255, 0.24);
+    border-color: #4da3ff;
+}
+
+/* Clear History button */
+#clearHistoryBtn {
+    padding: 8px 14px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(77, 163, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(77, 163, 255, 0.12);
+    color: #dceaff;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+#clearHistoryBtn:hover {
+    background: rgba(77, 163, 255, 0.24);
+    border-color: #4da3ff;
+}

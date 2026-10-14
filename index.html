@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+<div class="weather-container">
+
+    <div class="dashboard-header">
+        <div class="main-content">
+            <h1>Weather App</h1>
+            <p id="currentDateTime"></p>
+
+            <div class="search-bar">
+                <input type="text" id="cityInput" placeholder="Enter a city">
+                <button id="searchBtn">Search</button>
+            </div>
+        </div>
+
+        <aside class="control-sidebar">
+            <button id="darkModeToggle">🌙 Dark Mode</button>
+            <button id="unitToggle">Switch to °F</button>
+            <button id="locationBtn">📍 Use My Location</button>
+        </aside>
+    </div>
+
+  <div id="searchHistory">
+    <h3>Recent Searches</h3>
+   <button id="clearHistoryBtn">Clear History</button>
+    <div id="historyList"></div>
+  </div>
+    <div id="weatherResult">
+    <p id="weatherIcon">🌤️</p>
+    <h2 id="cityName">City</h2>
+    <p id="temperature">Loading temperature...</p>
+    <p id="description">Weather Description</p>
+    <p id="wind-speed">Wind speed: --</p>
+    <p id="humidity">Humidity: --</p>
+    </div>
+    <div id="hourlyForecast">
+    <h2>Hourly Forecast</h2>
+    <div id="hourlyList"></div>
+</div>
+    <div id="forecast">
+        <h2>5-Day Forecast</h2>
+        <div id="forecastList"></div>
+    </div>
+    </div>
+     <footer class="app-footer">
+        <p>Weather Dashboard</p>
+        <span>Weather data powered by Open-Meteo</span>
+        <span>Built with care 💙</span>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
